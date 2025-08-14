@@ -1,0 +1,142 @@
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+  background-color: #fafafa;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #0f4c81;
+}
+
+.error {
+  color: #d9534f;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.filterSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem 2rem;
+  margin-bottom: 2rem;
+  background-color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgb(15 76 129 / 0.1);
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f4c81;
+}
+
+.input {
+  margin-top: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #0f4c81;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #222;
+  outline-offset: 2px;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: #0a3560;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.statCard {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgb(15 76 129 / 0.15);
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.statTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f4c81;
+  margin-bottom: 0.3rem;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0a3560;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f4c81;
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.select {
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #0f4c81;
+  border-radius: 4px;
+  color: #222;
+  cursor: pointer;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgb(15 76 129 / 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tableHeader {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  background-color: #e7f0fa;
+  border-bottom: 1px solid #0f4c81;
+  font-weight: 600;
+  color: #0a3560;
+}
+
+.tableRow:hover {
+  background-color: #f0f8ff;
+}
+
+.tableCell {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid #e0e7ff;
+  color: #222;
+  font-size: 0.95rem;
+}
+
+.noData {
+  padding: 1.5rem 0;
+  color: #999;
+  font-style: italic;
+  text-align: center;
+}

@@ -109,7 +109,7 @@ export default function ProductImagePage() {
               {(Array.isArray(imagesMap[product.id]) ? imagesMap[product.id] : []).map((img) => (
                 <div key={img.id} className={styles.imageBox}>
                   <Image
-                    src={`http://localhost:4000/${img.filePath.replace(/\\/g, '/')}`}
+                    src={`https://a06205d12400.ngrok-free.app/${img.filePath.replace(/\\/g, '/')}`}
                     alt={img.originalName}
                     width={150}       // uygun genişlik (kendine göre ayarla)
                     height={150}      // uygun yükseklik (kendine göre ayarla)

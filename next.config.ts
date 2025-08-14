@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'senin-backend-domain.com',
+        hostname: 'a06205d12400.ngrok-free.app',
       },
       {
         protocol: 'http',

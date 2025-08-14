@@ -214,7 +214,7 @@ export default function VisionPage() {
             {images.map((img) => (
               <div key={img.id} className={styles.imageItem}>
                 <Image
-                  src={`http://localhost:4000/${img.filePath.replace(/\\/g, '/')}`}
+                  src={`https://a06205d12400.ngrok-free.app/${img.filePath.replace(/\\/g, '/')}`}
                   alt={img.originalName}
                   width={150}        // uygun genişlik
                   height={150}       // uygun yükseklik

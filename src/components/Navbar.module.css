@@ -1,0 +1,159 @@
+/* Navbar */
+.navbar {
+  position: fixed; /* sayfa scroll olsa da sabit kalsın */
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999;
+
+  background-color: #4f46e5;
+  color: #ffffff;
+  padding: clamp(0.5rem, 2vw, 1rem) clamp(1rem, 5vw, 1.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: clamp(48px, 6vh, 64px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+
+/* Menü butonu ve marka alanını yan yana tutmak için */
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 1rem);
+}
+
+.brand {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 700;
+  user-select: none;
+}
+
+.menuButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: clamp(24px, 5vw, 40px);
+  height: clamp(16px, 3vw, 28px);
+  cursor: pointer;
+  padding: 0;
+  background: none;
+  border: none;
+  margin: 0;
+}
+
+.bar {
+  height: clamp(2px, 0.4vw, 4px);
+  width: 100%;
+  background-color: white;
+  transition: all 0.3s ease-in-out;
+  border-radius: 2px;
+}
+
+.bar1Active {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.bar2Active {
+  opacity: 0;
+}
+
+.bar3Active {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  padding-right: clamp(0.5rem, 2vw, 1rem);
+}
+
+/* Email ve bildirim wrapper */
+.emailWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.email {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #f0f0f0;
+  user-select: text;
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notificationIcon {
+  margin-left: 0.5rem;
+  font-size: 1.3rem;
+  color: #1f2937; /* Tailwind slate-800 */
+}
+
+.notificationBadge {
+  background-color: red;
+  color: white;
+  border-radius: 9999px;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  margin-left: 0.3rem;
+}
+
+.notificationPopup {
+  position: absolute;
+  top: 2.5rem;
+  right: 1rem;
+  background: white;
+  color: #1f2937; /* yazı rengi koyu slate */
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notificationPopup li {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #1f2937; /* okunabilir yazı rengi */
+  padding: 8px;
+  border-bottom: 1px solid #e5e7eb; /* Tailwind gray-200 */
+  cursor: pointer;
+  background-color: white;
+  transition: background-color 0.2s;
+}
+
+.notificationPopup li:hover {
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+}
+
+.notificationPopup li.unread {
+  background-color: #dbeafe; /* Tailwind blue-100 */
+  font-weight: 700;
+}
+
+.logoutButton {
+  background-color: #ef4444;
+  border: none;
+  padding: clamp(0.25rem, 0.8vw, 0.5rem) clamp(0.5rem, 1.5vw, 1rem);
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: clamp(0.75rem, 1vw, 1rem);
+}
+
+.logoutButton:hover {
+  background-color: #dc2626;
+}
+

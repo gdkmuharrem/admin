@@ -1,0 +1,30 @@
+.layoutContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 4rem 1.5rem 1.5rem 1.5rem;
+  background-color: #f9fafb; /* bu da localde kalabilir */
+  transition: margin-left 0.3s ease-in-out;
+  box-sizing: border-box;
+}
+
+.withSidebar {
+  margin-left: 220px;
+}
+
+.loadingMessage {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.125rem;
+  color: #64748b;
+}
+
+.loginOnly {
+  display: contents;
+}

@@ -1,0 +1,80 @@
+.sidebar {
+  background-color: #1e293b;
+  color: white;
+  width: 220px;
+  position: fixed;
+  top: clamp(48px, 6vh, 64px); /* Navbar yüksekliği ile tam uyumlu */
+  bottom: 0;
+  left: 0;
+  padding-left: clamp(1rem, 2vw, 1.5rem); /* soldan boşluk navbar ile uyumlu */
+  box-sizing: border-box;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(-100%);
+  z-index: 40;
+  overflow-y: auto;
+}
+
+.sidebarOpen {
+  transform: translateX(0);
+}
+
+.overlay {
+  position: fixed;
+  top: clamp(48px, 6vh, 64px); /* Navbar yüksekliği ile uyumlu */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 30;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.overlayVisible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Büyük ekranlarda overlay gizli */
+@media (min-width: 768px) {
+  .overlay {
+    display: none !important;
+  }
+}
+
+/* Sidebar içindeki nav */
+.nav {
+  padding: 2rem 1rem;
+}
+
+.nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav li {
+  margin-bottom: 1.25rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #e2e8f0;
+  font-weight: 500;
+  display: block;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.nav a:hover {
+  background-color: #334155;
+  transform: translateX(4px);
+}
+
+.nav a.active {
+  background-color: #475569;
+  font-weight: 600;
+}
+

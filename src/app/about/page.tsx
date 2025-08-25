@@ -264,9 +264,10 @@ export default function AboutPage() {
                   alt={img.originalName}
                   width={150}
                   height={100}
+                  style={{ width: 'auto', height: 'auto', cursor: 'pointer' }}
+                  priority
                   className={styles.imageThumb}
                   onClick={() => handlePreview(img.filePath)}
-                  style={{ cursor: 'pointer' }}
                 />
                 <button
                   onClick={() => handleImageDelete(img.id)}
@@ -309,8 +310,9 @@ export default function AboutPage() {
               alt="Preview"
               width={800}
               height={600}
+              style={{ width: 'auto', height: 'auto', objectFit: 'contain' }}
+              priority
               className={styles.modalImage}
-              style={{ objectFit: 'contain' }}
             />
           </div>
         </div>

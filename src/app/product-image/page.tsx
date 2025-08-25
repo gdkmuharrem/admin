@@ -111,9 +111,11 @@ export default function ProductImagePage() {
                   <Image
                     src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${img.filePath.replace(/\\/g, '/')}`}
                     alt={img.originalName}
-                    width={150}       // uygun genişlik (kendine göre ayarla)
-                    height={150}      // uygun yükseklik (kendine göre ayarla)
+                    width={300}       // uygun genişlik (kendine göre ayarla)
+                    height={300}      // uygun yükseklik (kendine göre ayarla)
                     className={styles.imageThumb}
+                    style={{ width: 'auto', height: 'auto' }}
+                    priority
                   />
 
                   <button

@@ -267,7 +267,8 @@ export default function MisionPage() {
                   height={100}
                   className={styles.imageThumb}
                   onClick={() => handlePreview(img.filePath)}
-                  style={{ cursor: 'pointer' }}
+                  style={{ width: 'auto', height: 'auto', cursor: 'pointer' }}
+                  priority
                 />
                 <button
                   onClick={() => handleImageDelete(img.id)}
@@ -310,7 +311,8 @@ export default function MisionPage() {
               alt="Preview"
               width={800}
               height={600}
-              style={{ objectFit: 'contain' }}
+              style={{ width: 'auto', height: 'auto', objectFit: 'contain' }}
+              priority
               className={styles.modalImage}
             />
           </div>

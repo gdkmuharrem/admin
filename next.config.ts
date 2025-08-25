@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'api.muharremgedik.online',
+        hostname: 'localhost',
+        port: '4000',
         pathname: '/**',
       },
     ],

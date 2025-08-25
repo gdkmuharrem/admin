@@ -260,7 +260,7 @@ export default function AboutPage() {
             {images.map((img) => (
               <div key={img.id} className={styles.imageItem}>
                 <Image
-                  src={`http://localhost:4000/${img.filePath.replace(/\\/g, '/')}`}
+                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${img.filePath.replace(/\\/g, '/')}`}
                   alt={img.originalName}
                   width={150}
                   height={100}

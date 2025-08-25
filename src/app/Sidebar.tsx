@@ -12,7 +12,7 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { label: 'Dashboard', href: '/' },
+  { label: 'Dashboard', href: '/dashboard' },
   { label: 'Kategoriler', href: '/category' },
   { label: 'İletişim Mesajları', href: '/contact' },
   { label: 'Ürünler', href: '/product' },

@@ -7,7 +7,7 @@ export function middleware(req: NextRequest) {
 
   // Eğer kullanıcı login sayfasına gitmek isterse ve token varsa dashboard'a yönlendir
   if (pathname.startsWith('/login') && token) {
-    return NextResponse.redirect(new URL('/', req.url));
+    return NextResponse.redirect(new URL('/dashboard', req.url));
   }
 
   // Eğer kullanıcı admin sayfasına gitmek ister ve token yoksa login sayfasına yönlendir

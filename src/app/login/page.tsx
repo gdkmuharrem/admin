@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import LoginForm from './LoginForm';
 import { login } from '@/services/authService';
 import { LoginData } from '@/types/auth';
@@ -10,7 +9,7 @@ import { AxiosError } from 'axios';
 export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+
 
   async function handleLogin(data: LoginData) {
     console.log("🚀 handleLogin çalıştı, gelen data:", data);
@@ -25,7 +24,7 @@ export default function AdminLoginPage() {
 
       console.log("🍪 Cookie tarayıcıda mevcut mu kontrol et (Application sekmesinden bak)");
       console.log("➡️ Dashboard'a yönlendiriliyor...");
-      router.push('/');
+      window.location.href = '/';
       console.log("📍 router.push çağrıldı");
     } catch (err: unknown) {
       console.error("❌ Login hatası:", err);

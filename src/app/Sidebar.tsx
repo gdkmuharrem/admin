@@ -22,6 +22,7 @@ const menuItems = [
   { label: 'Vizyon', href: '/vision' },
   { label: 'Misyon', href: '/mision' },
   { label: 'Logs', href: '/logs' },
+  { label: 'Hero', href: '/hero' },
 ];
 
 export default function Sidebar({ isOpen, onClose, className = '' }: SidebarProps) {

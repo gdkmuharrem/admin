@@ -1,4 +1,3 @@
-// LayoutWrapper.tsx - Client Component
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
@@ -16,6 +15,7 @@ export default function LayoutWrapper({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Sidebar responsive kontrolü
   useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 768px)');
     setSidebarOpen(mediaQuery.matches);
@@ -24,6 +24,7 @@ export default function LayoutWrapper({ children }: { children: ReactNode }) {
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
+  // Admin auth kontrolü
   useEffect(() => {
     if (pathname.startsWith('/login')) {
       setAdmin(null);
@@ -61,18 +62,21 @@ export default function LayoutWrapper({ children }: { children: ReactNode }) {
     if (window.innerWidth < 768) setSidebarOpen(false);
   };
 
+  // Loading spinner
   if (loading) {
     return (
-      <div className="w-screen h-screen flex items-center justify-center bg-white">
+      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-b-4"></div>
       </div>
     );
   }
 
+  // Login sayfası layout'u
   if (pathname.startsWith('/login')) {
     return <div className={styles.loginOnly}>{children}</div>;
   }
 
+  // Admin panel layout
   return (
     <div className={styles.layoutContainer}>
       <Navbar

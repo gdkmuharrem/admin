@@ -1,4 +1,4 @@
-// RootLayout.tsx - Server Component
+// RootLayout.tsx
 import './globals.css';
 import { ReactNode } from 'react';
 import LayoutWrapper from './LayoutWrapper';

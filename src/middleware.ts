@@ -2,16 +2,17 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get('token')?.value; // httpOnly cookie genellikle okunamaz
-  const pathname = req.nextUrl.pathname;
+  const token = req.cookies.get('token')?.value;
+  const { pathname } = req.nextUrl;
 
-  // Eğer kullanıcı login sayfasına gitmek isterse ve token varsa dashboard'a yönlendir
-  if (pathname.startsWith('/login') && token) {
+  // Login sayfasında token varsa dashboard'a yönlendir
+  if (pathname === '/login' && token) {
     return NextResponse.redirect(new URL('/dashboard', req.url));
   }
 
-  // Eğer kullanıcı admin sayfasına gitmek ister ve token yoksa login sayfasına yönlendir
-  if (pathname.startsWith('/') && !pathname.startsWith('/login') && !token) {
+  // Dashboard veya diğer admin sayfalarına token yoksa login'e yönlendir
+  const adminPaths = ['/dashboard', '/admin'];
+  if (adminPaths.some(path => pathname.startsWith(path)) && !token) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
@@ -19,5 +20,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['//:path*', '/'],
+  matcher: ['/:path*'], // tüm sayfalar için middleware çalışır
 };

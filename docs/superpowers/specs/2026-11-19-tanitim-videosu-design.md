@@ -26,7 +26,7 @@ hikâyeli çizgi film tarzında olacak (Çizgili Anılar örneği).
 3. 8-13 sn – Mobil: telefon kayarak girer, uygulama ekranı doluyor. "iOS ve Android uygulama".
 4. 13-18 sn – Masaüstü ve endüstriyel: panel, canlı sensör grafiği. "Masaüstü ve endüstriyel yazılım".
 5. 18-23 sn – Donanım: NFC kart okutulur, yeşil onay, turnike açılır. "NFC, sensör, mikrodenetleyici".
-6. 23-27 sn – Kanıt: sayaç 0'dan 40'a. "40 fuarda kullanıldı" + GEDEXPO / GEDSTAFF etiketleri.
+6. 23-27 sn – Hazır çözümler: GEDEXPO ve GEDSTAFF kartları yan yana belirir. "Fuar ve etkinlikler için hazır çözümler". Rakam, fuar sayısı ya da referans iddiası yazılmaz.
 7. 27-31 sn – Çağrı: "Siz hayal edin, biz gerçekleştirelim." + "24 saatte dönüş · gedstack.com".
 
 ## Yaklaşımlar
@@ -43,3 +43,4 @@ kare ekran kaydı, ffmpeg ile MP4. Çıktı: `video/getstack-tanitim-1/`. Uygula
 - Vurgu rengi, sahne süreleri, sessiz üretim.
 - Sahnelerdeki arayüz içerikleri gerçek müşteri verisi değil, uydurma örnek veridir.
 - Videoda telefon/e-posta yok, yalnızca gedstack.com.
+- Videoda hiçbir yerde sayı, fuar adedi veya "şu kadar yerde kullanıldı" tarzı iddia yer almaz (kullanıcı talebi).

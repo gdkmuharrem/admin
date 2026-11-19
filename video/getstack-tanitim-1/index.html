@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>GEDSTACK Tanıtım 1</title>
+<meta name="viewport" content="width=1080">
+<style>
+:root{--bg:#0b0e14;--panel:#0f172a;--panel2:#16213a;--text:#e1e2ea;--light:#f6f8fc;--accent:#38bdf8;--accent2:#6366f1;--green:#34d399;--muted:#8a94a8;--line:rgba(255,255,255,.09)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;background:var(--bg);overflow:hidden;font-family:'Inter',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+#root{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg)}
+#grid{position:absolute;inset:-80px;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:80px 80px;opacity:.55}
+#glow{position:absolute;left:-200px;top:300px;width:1480px;height:1100px;background:radial-gradient(closest-side,rgba(56,189,248,.20),transparent 70%)}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.55) 100%);pointer-events:none}
+#logo{position:absolute;top:110px;left:0;width:100%;text-align:center;font-weight:800;font-size:46px;letter-spacing:8px;color:var(--light);z-index:20}
+#logo b{color:var(--accent);font-weight:800}
+.scene{position:absolute;inset:0;display:none}
+.cam{position:absolute;inset:0;transform-origin:540px 800px}
+.abs{position:absolute}
+.cap{position:absolute;left:90px;width:900px;top:1370px;text-align:center;font-weight:800;font-size:70px;line-height:1.15;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.6);z-index:15}
+.cap span{display:inline-block;margin:0 8px;white-space:nowrap}
+.cap .hi{color:var(--accent)}
+.win{background:var(--panel);border:2px solid rgba(255,255,255,.1);border-radius:34px;box-shadow:0 50px 120px rgba(0,0,0,.6),0 0 0 1px rgba(56,189,248,.08);overflow:hidden}
+.bar{border-radius:12px;background:rgba(255,255,255,.14)}
+.dot{width:20px;height:20px;border-radius:50%}
+</style>
+</head>
+<body>
+<div id="root">
+  <div id="grid"></div><div id="glow"></div>
+  <div id="scenes"></div>
+  <div id="vig"></div>
+  <div id="logo">GED<b>STACK</b></div>
+</div>
+<script>
+const W=1080,H=1920,TOTAL=31;
+window.TOTAL=TOTAL;
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const eo=t=>1-Math.pow(1-clamp(t),3);
+const eio=t=>{t=clamp(t);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+const eob=t=>{t=clamp(t);const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)};
+const pr=(t,a,b)=>clamp((t-a)/(b-a));
+
+function el(tag,css,parent,html){const e=document.createElement(tag);if(css)e.style.cssText=css;if(html!=null)e.innerHTML=html;if(parent)parent.appendChild(e);return e}
+function setT(e,x,y,s=1,r=0){e.style.transform=`translate(${x}px,${y}px) scale(${s}) rotate(${r}deg)`}
+function pop(e,p,dy=40){const o=eo(p);e.style.opacity=o;e.style.transform=`translateY(${(1-o)*dy}px) scale(${.94+.06*eob(p)})`}
+
+/* ---------- altyazı ---------- */
+function makeCaption(parent,words,start=.5){
+  const c=el('div','',parent);c.className='cap';
+  const spans=words.map(w=>{const s=el('span','opacity:0',c,w.t);if(w.hi)s.className='hi';return s});
+  return lt=>spans.forEach((s,i)=>{const p=pr(lt,start+i*.1,start+i*.1+.35);const o=eo(p);s.style.opacity=o;s.style.transform=`translateY(${(1-o)*28}px) scale(${.9+.1*eob(p)})`});
+}
+
+/* ---------- sahne iskeleti ---------- */
+const scenes=[];
+function scene(start,end,build,last=false){
+  const root=el('div','',document.getElementById('scenes'));root.className='scene';
+  const cam=el('div','',root);cam.className='cam';
+  const api=build(cam,root);
+  scenes.push({start,end,root,cam,api,last});
+}
+
+/* ===== 1. KANCA 0-3 ===== */
+scene(0,3,(cam,root)=>{
+  const box=el('div','position:absolute;left:0;top:600px;width:1080px;text-align:center;font-weight:800;font-size:98px;line-height:1.12;letter-spacing:-2px;color:var(--light)',cam);
+  const l1=el('div','',box),l2=el('div','',box);
+  const chars=[];
+  const add=(par,txt,hi)=>{[...txt].forEach(ch=>{const s=el('span','opacity:0;white-space:pre'+(hi?';color:var(--accent)':''),par,ch);chars.push(s)})};
+  add(l1,'Aklındaki işi');add(l2,'yazılıma',true);add(l2,' dökelim.');
+  const caret=el('span','display:inline-block;width:12px;height:88px;background:var(--accent);margin-left:6px;vertical-align:-8px;border-radius:4px',null);
+  const sub=el('div','position:absolute;left:0;top:1010px;width:1080px;text-align:center;font-size:40px;font-weight:600;letter-spacing:6px;color:var(--muted)',cam,'YAZILIM + DONANIM');
+  return lt=>{
+    const n=Math.floor(eio(pr(lt,.25,2.1))*chars.length+.0001);
+    chars.forEach((c,i)=>c.style.opacity=i<n?1:0);
+    const tgt=chars[Math.max(0,Math.min(n,chars.length)-1)];
+    tgt.after(caret);
+    caret.style.opacity=(n>=chars.length&&Math.floor(lt*3)%2)?0:1;
+    sub.style.opacity=eo(pr(lt,2.0,2.6));
+  };
+});
+
+/* ===== 2. WEB 3-8 ===== */
+scene(3,8,(cam,root)=>{
+  const cap=makeCaption(root,[{t:'Web'},{t:'sitesi'},{t:'ve'},{t:'e-ticaret',hi:1}]);
+  const win=el('div','left:100px;top:330px;width:880px;height:900px',cam);win.className='win abs';
+  const top=el('div','position:absolute;left:0;top:0;width:100%;height:84px;background:#0b1224;border-bottom:1px solid var(--line)',win);
+  ['#ef4444','#f59e0b','#22c55e'].forEach((c,i)=>el('div',`position:absolute;left:${30+i*34}px;top:32px;background:${c}`,top).className='dot');
+  el('div','position:absolute;left:180px;top:20px;width:520px;height:44px;border-radius:22px;background:rgba(255,255,255,.08);color:var(--muted);font-size:22px;line-height:44px;padding-left:24px',top,'siteniz.com');
+  const nav=el('div','position:absolute;left:28px;top:112px;width:824px;height:64px;border-radius:18px;background:var(--panel2)',win);
+  el('div','position:absolute;left:20px;top:16px;width:34px;height:34px;border-radius:10px;background:var(--accent)',nav);
+  [0,1,2].forEach(i=>{const b=el('div',`position:absolute;left:${90+i*100}px;top:26px;width:70px;height:12px`,nav);b.className='bar'});
+  const cart=el('div','position:absolute;right:22px;top:12px;width:44px;height:40px;border-radius:12px;background:rgba(255,255,255,.12)',nav);
+  const badge=el('div','position:absolute;right:-8px;top:-10px;width:28px;height:28px;border-radius:50%;background:var(--green);color:#04210f;font-weight:800;font-size:18px;text-align:center;line-height:28px;opacity:0',cart,'1');
+  const hero=el('div','position:absolute;left:28px;top:196px;width:824px;height:270px;border-radius:26px;background:linear-gradient(120deg,#0ea5e9,#6366f1)',win);
+  [[420,30,52],[300,16,106],[220,16,134]].forEach(([w,h,y],i)=>{const b=el('div',`position:absolute;left:40px;top:${y}px;width:${w}px;height:${h}px;background:rgba(255,255,255,${i?'.55':'.95'})`,hero);b.className='bar'});
+  el('div','position:absolute;left:40px;top:190px;width:190px;height:52px;border-radius:26px;background:#fff',hero);
+  const cards=[0,1,2].map(i=>{
+    const c=el('div',`position:absolute;left:${28+i*284}px;top:494px;width:260px;height:360px;border-radius:22px;background:var(--panel2);border:1px solid var(--line)`,win);
+    el('div',`position:absolute;left:14px;top:14px;width:232px;height:170px;border-radius:16px;background:${['linear-gradient(135deg,#f59e0b,#ef4444)','linear-gradient(135deg,#22d3ee,#3b82f6)','linear-gradient(135deg,#a78bfa,#ec4899)'][i]}`,c);
+    el('div','position:absolute;left:14px;top:206px;width:170px;height:16px;background:rgba(255,255,255,.7)',c).className='bar';
+    el('div','position:absolute;left:14px;top:236px;width:110px;height:12px;background:rgba(255,255,255,.28)',c).className='bar';
+    el('div','position:absolute;left:14px;top:276px;color:var(--light);font-weight:800;font-size:30px',c,'₺ '+['249','389','179'][i]);
+    const btn=el('div','position:absolute;right:14px;top:268px;width:92px;height:52px;border-radius:14px;background:var(--accent);color:#06222e;font-weight:800;font-size:24px;text-align:center;line-height:52px',c,'Ekle');
+    return {c,btn};
+  });
+  const cursor=el('div','position:absolute;width:46px;height:46px;z-index:5',cam,'<svg viewBox="0 0 24 24" width="46" height="46"><path d="M4 2l16 9-7 2-3 7z" fill="#fff" stroke="#0b0e14" stroke-width="1.5" stroke-linejoin="round"/></svg>');
+  const ripple=el('div','position:absolute;width:80px;height:80px;border-radius:50%;border:4px solid var(--accent);opacity:0;z-index:4',cam);
+  const items=[[nav,.3],[hero,.5],[cards[0].c,.8],[cards[1].c,.95],[cards[2].c,1.1]];
+  return lt=>{
+    cap(lt);
+    items.forEach(([e,s])=>pop(e,pr(lt,s,s+.5),50));
+    const bx=100+28+260-14-46/2+0,by=330+494+268+26;
+    const p=eio(pr(lt,2.0,3.3));
+    const cx=lerp(860,bx,p),cy=lerp(560,by,p);
+    cursor.style.left=cx+'px';cursor.style.top=cy+'px';cursor.style.opacity=eo(pr(lt,1.8,2.1));
+    const click=pr(lt,3.4,3.9);
+    cursor.style.transform=`scale(${1-.15*Math.sin(click*Math.PI)})`;
+    ripple.style.left=(bx-8)+'px';ripple.style.top=(by-8)+'px';
+    ripple.style.opacity=click>0&&click<1?1-click:0;ripple.style.transform=`scale(${.4+click*1.6})`;
+    const b=eob(pr(lt,3.5,3.95));badge.style.opacity=b>0?1:0;badge.style.transform=`scale(${b})`;
+  };
+});
+
+/* ===== 3. MOBİL 8-13 ===== */
+scene(8,13,(cam,root)=>{
+  const cap=makeCaption(root,[{t:'iOS'},{t:'ve'},{t:'Android',hi:1},{t:'uygulama'}]);
+  const phone=el('div','left:300px;top:290px;width:480px;height:980px;border-radius:84px;background:#1b2437;border:10px solid #2a364d;box-shadow:0 60px 140px rgba(0,0,0,.65),0 0 80px rgba(56,189,248,.15);overflow:hidden',cam);phone.className='abs';
+  const scr=el('div','position:absolute;inset:0;background:linear-gradient(180deg,#0f172a,#0b1224)',phone);
+  el('div','position:absolute;left:160px;top:16px;width:140px;height:34px;border-radius:17px;background:#05070c;z-index:3',scr);
+  el('div','position:absolute;left:34px;top:84px;width:200px;height:26px;background:rgba(255,255,255,.85)',scr).className='bar';
+  el('div','position:absolute;left:34px;top:126px;width:140px;height:16px;background:rgba(255,255,255,.3)',scr).className='bar';
+  el('div','position:absolute;right:34px;top:78px;width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2))',scr);
+  const hero=el('div','position:absolute;left:30px;top:178px;width:400px;height:210px;border-radius:30px;background:linear-gradient(130deg,#0ea5e9,#6366f1);overflow:hidden',scr);
+  el('div','position:absolute;left:26px;top:26px;width:150px;height:16px;background:rgba(255,255,255,.7)',hero).className='bar';
+  el('div','position:absolute;left:26px;top:60px;width:230px;height:34px;background:#fff',hero).className='bar';
+  const sp=el('svg','position:absolute;left:0;top:104px;width:400px;height:100px',hero);
+  sp.outerHTML='<svg style="position:absolute;left:0;top:104px" width="400" height="100" viewBox="0 0 400 100"><path d="M0 80 C60 60 90 90 150 55 S250 70 300 30 S370 40 400 20" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="5" stroke-linecap="round"/></svg>';
+  const rows=[0,1,2].map(i=>{
+    const r=el('div',`position:absolute;left:30px;top:${420+i*128}px;width:400px;height:108px;border-radius:24px;background:var(--panel2);border:1px solid var(--line)`,scr);
+    el('div',`position:absolute;left:20px;top:22px;width:64px;height:64px;border-radius:18px;background:${['#f59e0b','#22d3ee','#a78bfa'][i]}`,r);
+    el('div','position:absolute;left:104px;top:30px;width:170px;height:16px;background:rgba(255,255,255,.75)',r).className='bar';
+    el('div','position:absolute;left:104px;top:62px;width:110px;height:12px;background:rgba(255,255,255,.3)',r).className='bar';
+    el('div','position:absolute;right:20px;top:38px;width:52px;height:32px;border-radius:16px;background:rgba(52,211,153,.25)',r);
+    return r;
+  });
+  const tab=el('div','position:absolute;left:24px;bottom:30px;width:412px;height:92px;border-radius:46px;background:#131d33;border:1px solid var(--line)',scr);
+  [0,1,2,3].forEach(i=>el('div',`position:absolute;left:${44+i*92}px;top:28px;width:36px;height:36px;border-radius:12px;background:${i==0?'var(--accent)':'rgba(255,255,255,.22)'}`,tab));
+  const toast=el('div','position:absolute;left:24px;top:60px;width:412px;height:92px;border-radius:26px;background:#f6f8fc;box-shadow:0 20px 50px rgba(0,0,0,.5);z-index:6;color:#0b0e14',scr);
+  el('div','position:absolute;left:20px;top:22px;width:48px;height:48px;border-radius:50%;background:var(--green);color:#04210f;font-weight:800;font-size:30px;text-align:center;line-height:48px',toast,'✓');
+  el('div','position:absolute;left:88px;top:16px;font-weight:800;font-size:26px',toast,'Yeni sipariş geldi');
+  el('div','position:absolute;left:88px;top:52px;font-weight:500;font-size:20px;color:#475569',toast,'Uygulamanızdan şimdi');
+  return lt=>{
+    cap(lt);
+    const p=eob(pr(lt,0,.9));phone.style.transform=`translateY(${(1-p)*1000}px) rotate(${(1-p)*-6}deg)`;
+    rows.forEach((r,i)=>pop(r,pr(lt,.9+i*.25,1.4+i*.25),40));
+    pop(hero,pr(lt,.8,1.3),40);
+    const t=pr(lt,3.1,3.6),u=pr(lt,4.5,4.9);
+    toast.style.transform=`translateY(${(1-eob(t))*-220+u*-220}px)`;toast.style.opacity=t>0?1-u:0;
+  };
+});
+
+/* ===== 4. MASAÜSTÜ + ENDÜSTRİYEL 13-18 ===== */
+scene(13,18,(cam,root)=>{
+  const cap=makeCaption(root,[{t:'Masaüstü'},{t:'ve'},{t:'endüstriyel',hi:1},{t:'yazılım'}]);
+  const win=el('div','left:70px;top:330px;width:940px;height:900px',cam);win.className='win abs';
+  const side=el('div','position:absolute;left:0;top:0;width:190px;height:100%;background:#0b1224;border-right:1px solid var(--line)',win);
+  el('div','position:absolute;left:30px;top:34px;width:44px;height:44px;border-radius:14px;background:var(--accent)',side);
+  [0,1,2,3,4].forEach(i=>{el('div',`position:absolute;left:24px;top:${130+i*74}px;width:142px;height:52px;border-radius:14px;background:${i==0?'rgba(56,189,248,.18)':'transparent'}`,side);
+    el('div',`position:absolute;left:44px;top:${148+i*74}px;width:${[90,70,100,60,80][i]}px;height:14px;background:rgba(255,255,255,${i==0?.8:.3})`,side).className='bar'});
+  const tiles=[['Sıcaklık','42 °C','var(--accent)'],['Hat','Aktif','var(--green)'],['Alarm','0','var(--muted)']].map((d,i)=>{
+    const t=el('div',`position:absolute;left:${220+i*234}px;top:36px;width:214px;height:130px;border-radius:22px;background:var(--panel2);border:1px solid var(--line)`,win);
+    el('div','position:absolute;left:20px;top:18px;font-size:22px;font-weight:600;color:var(--muted)',t,d[0]);
+    el('div',`position:absolute;left:20px;top:56px;font-size:48px;font-weight:800;color:${d[2]}`,t,d[1]);
+    return t});
+  const chart=el('div','position:absolute;left:220px;top:196px;width:690px;height:400px;border-radius:22px;background:var(--panel2);border:1px solid var(--line);overflow:hidden',win);
+  el('div','position:absolute;left:22px;top:16px;font-size:22px;font-weight:600;color:var(--muted)',chart,'Canlı sensör verisi');
+  const svg=el('div','position:absolute;left:0;top:0',chart);
+  const bars=el('div','position:absolute;left:220px;top:620px;width:690px;height:240px;border-radius:22px;background:var(--panel2);border:1px solid var(--line)',win);
+  const bs=[...Array(12)].map((_,i)=>el('div',`position:absolute;left:${28+i*52}px;bottom:24px;width:34px;border-radius:8px;background:linear-gradient(180deg,var(--accent),var(--accent2))`,bars));
+  const sidebox=el('div','position:absolute;left:24px;bottom:30px;width:142px;height:90px;border-radius:18px;background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.4)',side);
+  const led=el('div','position:absolute;left:20px;top:34px;width:22px;height:22px;border-radius:50%;background:var(--green)',sidebox);
+  el('div','position:absolute;left:54px;top:32px;font-size:22px;font-weight:700;color:var(--green)',sidebox,'Bağlı');
+  const data=x=>.5+.22*Math.sin(x*1.3)+.12*Math.sin(x*3.1+1)+.06*Math.sin(x*7.3);
+  return lt=>{
+    cap(lt);
+    pop(win,pr(lt,0,.6),60);
+    tiles.forEach((t,i)=>pop(t,pr(lt,.5+i*.12,1.0+i*.12),30));
+    pop(chart,pr(lt,.8,1.3),30);pop(bars,pr(lt,1.0,1.5),30);
+    const w=690,h=400,n=70;let pts=[];
+    for(let i=0;i<n;i++){const x=i/(n-1);const v=data(lt*1.6+x*5);pts.push([x*w,60+(1-v)*(h-110)])}
+    const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+    const last=pts[n-1];
+    svg.innerHTML=`<svg width="${w}" height="${h}">${[1,2,3,4].map(i=>`<line x1="0" x2="${w}" y1="${60+i*58}" y2="${60+i*58}" stroke="rgba(255,255,255,.07)"/>`).join('')}<path d="${d} L${w} ${h} L0 ${h} Z" fill="rgba(56,189,248,.10)"/><path d="${d}" fill="none" stroke="#38bdf8" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${last[0]-6}" cy="${last[1]}" r="${9+3*Math.sin(lt*8)}" fill="#38bdf8"/></svg>`;
+    bs.forEach((b,i)=>{b.style.height=(40+170*(.5+.5*Math.sin(lt*2.4+i*.7))*eo(pr(lt,1.0+i*.04,1.6+i*.04)))+'px'});
+    led.style.opacity=.55+.45*Math.sin(lt*6);
+  };
+});
+
+/* ===== 5. DONANIM 18-23 ===== */
+scene(18,23,(cam,root)=>{
+  const cap=makeCaption(root,[{t:'NFC,'},{t:'sensör,'},{t:'mikrodenetleyici',hi:1}]);
+  const reader=el('div','left:330px;top:330px;width:420px;height:340px;border-radius:44px;background:linear-gradient(160deg,#1c2740,#111a30);border:2px solid rgba(255,255,255,.12);box-shadow:0 50px 100px rgba(0,0,0,.6)',cam);reader.className='abs';
+  const led=el('div','position:absolute;left:176px;top:40px;width:68px;height:68px;border-radius:50%;background:#475569;box-shadow:0 0 0 10px rgba(255,255,255,.05)',reader);
+  const nfc=el('div','position:absolute;left:150px;top:150px',reader,'<svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#8a94a8" stroke-width="1.6" stroke-linecap="round"><path d="M6 8.5a6.5 6.5 0 0 1 0 7"/><path d="M9.5 6a10 10 0 0 1 0 12"/><path d="M13 3.5a13.5 13.5 0 0 1 0 17"/></svg>');
+  el('div','position:absolute;left:0;top:284px;width:100%;text-align:center;font-weight:700;font-size:22px;letter-spacing:6px;color:var(--muted)',reader,'KARTI OKUTUN');
+  const rings=[0,1,2].map(()=>{const r=el('div','position:absolute;width:300px;height:300px;border-radius:50%;border:4px solid var(--accent);opacity:0;left:390px;top:350px',cam);return r});
+  const card=el('div','left:640px;top:760px;width:300px;height:190px;border-radius:26px;background:linear-gradient(135deg,#38bdf8,#6366f1);box-shadow:0 30px 70px rgba(0,0,0,.55);z-index:3',cam);card.className='abs';
+  el('div','position:absolute;left:26px;top:30px;width:56px;height:44px;border-radius:10px;background:linear-gradient(135deg,#fde68a,#f59e0b)',card);
+  el('div','position:absolute;left:26px;top:132px;font-weight:800;font-size:26px;letter-spacing:4px;color:#fff',card,'GEDSTACK');
+  const toast=el('div','left:290px;top:700px;width:500px;height:84px;border-radius:42px;background:var(--green);color:#04210f;font-weight:800;font-size:32px;text-align:center;line-height:84px;opacity:0',cam,'✓ Giriş onaylandı');toast.className='abs';
+  /* turnike (üstten görünüm) */
+  const lane=el('div','left:340px;top:850px;width:400px;height:480px;border-radius:30px;background:rgba(255,255,255,.04);border:2px dashed rgba(255,255,255,.14)',cam);lane.className='abs';
+  const dl=el('div','left:340px;top:1060px;width:200px;height:44px;border-radius:12px;background:linear-gradient(90deg,#334155,#475569)',cam);dl.className='abs';
+  const dr=el('div','left:540px;top:1060px;width:200px;height:44px;border-radius:12px;background:linear-gradient(90deg,#475569,#334155)',cam);dr.className='abs';
+  const gl=el('div','left:240px;top:1040px;width:100px;height:84px;border-radius:16px;background:#1b2437;border:2px solid rgba(255,255,255,.12)',cam);gl.className='abs';
+  const gr=el('div','left:740px;top:1040px;width:100px;height:84px;border-radius:16px;background:#1b2437;border:2px solid rgba(255,255,255,.12)',cam);gr.className='abs';
+  const gled=el('div','position:absolute;left:36px;top:30px;width:26px;height:26px;border-radius:50%;background:#ef4444',gl);
+  const person=el('div','left:514px;top:1400px;width:52px;height:52px;border-radius:50%;background:#f6f8fc;box-shadow:0 0 0 8px rgba(56,189,248,.35);z-index:3',cam);person.className='abs';
+  return lt=>{
+    cap(lt);
+    pop(reader,pr(lt,0,.6),50);
+    [lane,dl,dr,gl,gr].forEach((e,i)=>{if(e!==dl&&e!==dr){e.style.opacity=eo(pr(lt,.3,.8))}});
+    /* kart: gelir, okutur, çekilir */
+    const a=eio(pr(lt,.5,1.6)),b=eio(pr(lt,2.9,3.5));
+    const cx=lerp(lerp(700,430,a),430+500,b),cy=lerp(lerp(780,430,a),780,b);
+    card.style.left=cx+'px';card.style.top=cy+'px';card.style.opacity=pr(lt,.5,.8)*(1-b);
+    card.style.transform=`rotate(${lerp(14,-4,a)}deg) scale(${lerp(1.0,.9,a)})`;
+    /* halkalar + LED */
+    rings.forEach((r,i)=>{const p=pr(lt,1.5+i*.28,2.5+i*.28);r.style.opacity=p>0&&p<1?(1-p)*.8:0;r.style.transform=`scale(${.3+p*1.5})`});
+    const ok=lt>2.0;led.style.background=ok?'#34d399':'#475569';led.style.boxShadow=ok?'0 0 0 12px rgba(52,211,153,.25),0 0 60px rgba(52,211,153,.7)':'0 0 0 10px rgba(255,255,255,.05)';
+    const tp=eob(pr(lt,2.1,2.7));toast.style.opacity=tp>0?1:0;toast.style.transform=`scale(${tp})`;
+    toast.style.opacity=tp>0?(1-pr(lt,4.2,4.7)):0;
+    /* kapı + kişi */
+    const open=eio(pr(lt,2.2,3.0));
+    dl.style.left=(340-open*190)+'px';dr.style.left=(540+open*190)+'px';
+    gled.style.background=lt>2.2?'#34d399':'#ef4444';
+    const py=lt<1.4?lerp(1500,1180,eio(pr(lt,.2,1.4))):lt<3.0?1180:lerp(1180,780,eio(pr(lt,3.0,4.4)));
+    person.style.top=py+'px';person.style.opacity=pr(lt,.2,.6)*(1-pr(lt,4.3,4.8));
+  };
+});
+
+/* ===== 6. HAZIR ÇÖZÜMLER 23-27 ===== */
+scene(23,27,(cam,root)=>{
+  const cap=makeCaption(root,[{t:'Fuar'},{t:'ve'},{t:'etkinlikler'},{t:'için'},{t:'hazır',hi:1},{t:'çözümler',hi:1}]);
+  const defs=[
+    {x:60,name:'GEDEXPO',sub:'Fuar ve etkinlik yönetimi',list:['Online kayıt','Turnike yönetimi','Yönetim paneli'],g:'linear-gradient(150deg,#0ea5e9,#2563eb)'},
+    {x:560,name:'GEDSTAFF',sub:'Etkinlik personel yönetimi',list:['Personel kaydı','Otonom atama','Ücretlendirme'],g:'linear-gradient(150deg,#6366f1,#8b5cf6)'}];
+  const cards=defs.map(d=>{
+    const c=el('div',`left:${d.x}px;top:330px;width:460px;height:850px;border-radius:40px;background:var(--panel);border:2px solid rgba(255,255,255,.1);box-shadow:0 50px 110px rgba(0,0,0,.55);overflow:hidden`,cam);c.className='abs';
+    el('div',`position:absolute;left:0;top:0;width:100%;height:290px;background:${d.g}`,c);
+    el('div','position:absolute;left:36px;top:34px;padding:8px 20px;border-radius:30px;background:rgba(255,255,255,.22);font-weight:700;font-size:22px;letter-spacing:3px;color:#fff',c,'SaaS');
+    el('div','position:absolute;left:36px;top:130px;font-weight:800;font-size:60px;letter-spacing:-1px;color:#fff',c,d.name);
+    el('div','position:absolute;left:36px;top:212px;font-weight:600;font-size:26px;color:rgba(255,255,255,.88)',c,d.sub);
+    const chips=d.list.map((t,i)=>el('div',`position:absolute;left:36px;top:${340+i*150}px;width:388px;height:110px;border-radius:26px;background:var(--panel2);border:1px solid var(--line)`,c,
+      `<div style="position:absolute;left:24px;top:30px;width:50px;height:50px;border-radius:50%;background:rgba(52,211,153,.2);color:#34d399;font-weight:800;font-size:28px;text-align:center;line-height:50px">✓</div><div style="position:absolute;left:94px;top:0;height:110px;line-height:110px;font-weight:700;font-size:30px;color:var(--light)">${t}</div>`));
+    return {c,chips,dir:d.x<300?-1:1};
+  });
+  return lt=>{
+    cap(lt);
+    cards.forEach((k,i)=>{
+      const p=eob(pr(lt,.1+i*.2,.9+i*.2));
+      k.c.style.opacity=eo(pr(lt,.1+i*.2,.5+i*.2));
+      k.c.style.transform=`translateX(${(1-p)*k.dir*420}px) rotate(${(1-p)*k.dir*4}deg)`;
+      k.chips.forEach((ch,j)=>pop(ch,pr(lt,.9+i*.2+j*.18,1.4+i*.2+j*.18),30));
+    });
+  };
+});
+
+/* ===== 7. KAPANIŞ 27-31 ===== */
+scene(27,31,(cam,root)=>{
+  const mk=(t,css,hi)=>{const d=el('div',`position:absolute;left:0;width:1080px;text-align:center;font-weight:800;letter-spacing:-2px;${css}`,cam);d.innerHTML=t;return d};
+  const w1=mk('Siz hayal edin,','top:520px;font-size:98px;color:var(--light)');
+  const w2=mk('biz gerçekleştirelim.','top:655px;font-size:82px;color:var(--accent)');
+  const pill=el('div','position:absolute;left:290px;top:880px;width:500px;height:92px;border-radius:46px;border:2px solid rgba(255,255,255,.25);color:var(--light);font-weight:700;font-size:38px;text-align:center;line-height:88px',cam,'24 saatte dönüş');
+  const btn=el('div','position:absolute;left:240px;top:1030px;width:600px;height:130px;border-radius:65px;background:var(--accent);color:#06222e;font-weight:800;font-size:56px;text-align:center;line-height:130px;box-shadow:0 20px 80px rgba(56,189,248,.45)',cam,'gedstack.com');
+  return lt=>{
+    pop(w1,pr(lt,.1,.7),50);pop(w2,pr(lt,.45,1.05),50);
+    pop(pill,pr(lt,1.1,1.6),30);
+    const b=eob(pr(lt,1.5,2.1));btn.style.opacity=eo(pr(lt,1.5,1.8));
+    const pulse=1+.03*Math.sin(lt*5)*pr(lt,2.1,2.3);
+    btn.style.transform=`scale(${(.85+.15*b)*pulse})`;
+  };
+},true);
+
+/* ---------- ana zaman çizgisi ---------- */
+window.renderAt=function(t){
+  t=Math.max(0,Math.min(TOTAL-1/60,t));
+  document.getElementById('grid').style.transform=`translate(${-(t*12)%80}px,${-(t*18)%80}px)`;
+  document.getElementById('glow').style.opacity=.8+.2*Math.sin(t*1.2);
+  scenes.forEach(s=>{
+    const on=t>=s.start&&t<s.end;
+    s.root.style.display=on?'block':'none';
+    if(!on)return;
+    const lt=t-s.start,dur=s.end-s.start;
+    const inP=eo(pr(lt,0,.5)),outP=s.last?0:eio(pr(lt,dur-.4,dur));
+    const scale=(s.start===0?1:1.14-.14*inP)*(1+.06*lt/dur)*(1+.08*outP);
+    const rot=(s.start===0?0:(1-inP)*-1.2)+outP*1.0;
+    s.cam.style.transform=`scale(${scale}) rotate(${rot}deg)`;
+    s.root.style.opacity=(s.start===0?1:inP)*(1-outP);
+    s.api(lt);
+  });
+};
+window.renderAt(0);
+</script>
+</body>
+</html>
